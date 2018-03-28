@@ -5,4 +5,5 @@
 # Build target folder
 target/
 
-
+.idea/
+sutdbank.iml
