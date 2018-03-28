@@ -17,6 +17,9 @@ package sg.edu.sutd.bank.webapp.service;
 
 import sg.edu.sutd.bank.webapp.commons.ServiceException;
 import sg.edu.sutd.bank.webapp.model.ClientAccount;
+import sg.edu.sutd.bank.webapp.model.ClientTransaction;
+
+import java.util.List;
 
 
 public interface ClientAccountDAO {
@@ -25,4 +28,9 @@ public interface ClientAccountDAO {
 
 	void update(ClientAccount clientAccount) throws ServiceException;
 
+	ClientAccount findById(int accountId) throws ServiceException;
+
+	List<ClientAccount> findAllByUser(int userId) throws ServiceException;
+
+	void performTransactions(List<ClientTransaction> transactions) throws ServiceException;
 }

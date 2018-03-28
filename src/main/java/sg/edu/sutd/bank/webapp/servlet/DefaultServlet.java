@@ -72,6 +72,8 @@ public class DefaultServlet extends HttpServlet {
 	
 	protected void forward(String path, HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		resp.setContentType("text/html;charset=UTF-8;");
+		resp.setCharacterEncoding("UTF-8");
 		RequestDispatcher view = req.getRequestDispatcher(getPath(path));
 		view.forward(req, resp);
 	}

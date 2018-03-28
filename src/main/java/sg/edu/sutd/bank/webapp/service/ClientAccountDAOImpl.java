@@ -15,13 +15,18 @@ https://opensource.org/licenses/ECL-2.0
 
 package sg.edu.sutd.bank.webapp.service;
 
+import sg.edu.sutd.bank.webapp.commons.ServiceException;
+import sg.edu.sutd.bank.webapp.model.ClientAccount;
+import sg.edu.sutd.bank.webapp.model.ClientTransaction;
+import sg.edu.sutd.bank.webapp.model.TransactionStatus;
+import sg.edu.sutd.bank.webapp.model.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import sg.edu.sutd.bank.webapp.commons.ServiceException;
-import sg.edu.sutd.bank.webapp.model.ClientAccount;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientAccountDAOImpl extends AbstractDAOImpl implements ClientAccountDAO {
 
@@ -62,4 +67,86 @@ public class ClientAccountDAOImpl extends AbstractDAOImpl implements ClientAccou
 		}
 	}
 
+	@Override
+	public ClientAccount findById(int accountId) throws ServiceException {
+		Connection conn = connectDB();
+		PreparedStatement ps;
+		ResultSet rs;
+
+		try {
+			ps = prepareStmt(conn, "SELECT * FROM client_account WHERE id = ?");
+			ps.setInt(1, accountId);
+			rs = ps.executeQuery();
+
+			if (!rs.next())
+				return null;
+
+			ClientAccount acc = new ClientAccount();
+			acc.setUser(new User(rs.getInt("user_id")));
+			acc.setAmount(rs.getBigDecimal("amount"));
+			acc.setId(rs.getInt("id"));
+
+			return acc;
+		} catch (SQLException e) {
+			throw ServiceException.wrap(e);
+		}
+	}
+
+	@Override
+	public List<ClientAccount> findAllByUser(int userId) throws ServiceException {
+		Connection conn = connectDB();
+		PreparedStatement ps;
+		ResultSet rs;
+
+		try {
+			ps = prepareStmt(conn, "SELECT * FROM client_account WHERE user_id = ?");
+			ps.setInt(1, userId);
+			rs = ps.executeQuery();
+
+			List<ClientAccount> accounts = new ArrayList<>();
+
+			while (rs.next()) {
+				ClientAccount acc = new ClientAccount();
+				acc.setUser(new User(rs.getInt("user_id")));
+				acc.setAmount(rs.getBigDecimal("amount"));
+				acc.setId(rs.getInt("id"));
+
+				accounts.add(acc);
+			}
+
+			return accounts;
+		} catch (SQLException e) {
+			throw ServiceException.wrap(e);
+		}
+	}
+
+	@Override
+	public void performTransactions(List<ClientTransaction> transactions) throws ServiceException {
+		Connection conn = connectDB();
+
+		try {
+			for (ClientTransaction transaction : transactions) {
+				if (transaction.getStatus() == TransactionStatus.APPROVED) {
+					// Deduct money from sender's account
+					PreparedStatement psf = prepareStmt(conn, "UPDATE client_account SET amount = amount - ? WHERE id = ? AND amount >= ?");
+					psf.setBigDecimal(1, transaction.getAmount());
+					psf.setInt(2, transaction.getId());
+					psf.setBigDecimal(3, transaction.getAmount());
+
+					// Insert money into recipient's account
+					PreparedStatement pst = prepareStmt(conn, "UPDATE client_account SET amount = amount + ? WHERE id = ?");
+					pst.setBigDecimal(1, transaction.getAmount());
+					pst.setInt(2, transaction.getId());
+
+					int from = psf.executeUpdate();
+					int to = pst.executeUpdate();
+
+					if (from != 1 || to != 1)
+						throw new ServiceException(new IllegalStateException("From/to account not properly updated."));
+				}
+			}
+		} catch (SQLException e) {
+			throw ServiceException.wrap(e);
+		}
+	}
 }
