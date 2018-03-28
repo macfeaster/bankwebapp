@@ -3,7 +3,7 @@
 
 <div id="messageBox" class="hidden"></div>
 <c:if test="${not empty req_error}">
-	<div id="errorMsg">
+	<div id="errorMsg" class="alert alert-danger">
 		<p class="text-danger">${req_error}</p>
 	</div>
 </c:if>

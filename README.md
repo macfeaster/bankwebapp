@@ -48,7 +48,7 @@ We shall refer to the Apache Tomcat installation directory as `<TOMCAT_HOME>`.
 
 ### MySQL 5.7 or later
 
-See [yet another insignificant programming notes](https://www.ntu.edu.sg/home/ehchua/programming/sql/MySQL_HowTo.html#zz-3.1) for installation instructions. A default MySQL server account with the username `root` will be created and you will be prompted to create a password. 
+See [yet another insignificant programming notes](https://www.ntu.edu.sg/home/ehchua/programming/sql/MySQL_HowTo.html#zz-3.1) for installation instructions. A default MySQL server accounts with the username `root` will be created and you will be prompted to create a password. 
 
 *Do not forget* your password!
 
@@ -89,7 +89,7 @@ The project structure is as follows:
 ### Step 3. Update your MySQL server configurations
 
 Edit `<BANKWEBAPP>/src/main/resources/database.properties` and modify:
-* `jdbc.password` -- replace with the password of your `root` MySQL server account
+* `jdbc.password` -- replace with the password of your `root` MySQL server accounts
 
 ### Step 4. Start MySQL server
 
@@ -136,7 +136,7 @@ Open `Servers/Tomcat vX.X Server at localhost-config/server.xml` (where `vX.X` r
     />
 ```
 
-Replace the `connectionPassword` field with the password of your `root` MySQL server account.
+Replace the `connectionPassword` field with the password of your `root` MySQL server accounts.
 
 #### Step 7c. Run your web application from Eclipse
 
@@ -144,7 +144,7 @@ Right-click on your web application project in Eclipse and select `Run As --> Ru
 
 Navigate your web browser to http://localhost:8080/sutdbank.
 
-You should be able to log in with the default account `staff_1/123456`.
+You should be able to log in with the default accounts `staff_1/123456`.
 
 ### Step 8. Deploy your web application in Apache Tomcat (*Optional*)
 
@@ -167,7 +167,7 @@ Edit `<TOMCAT_HOME>/conf/server.xml` and add the following lines between the `<E
     />
 ```
 
-Replace the `connectionPassword` field with the password of your `root` MySQL server account.
+Replace the `connectionPassword` field with the password of your `root` MySQL server accounts.
 
 #### Step 8b. Clean your Apache Tomcat `webapps` directory
 
@@ -187,4 +187,4 @@ This creates the file `<TOMCAT_HOME>/webapps/bankwebapp.war`.
 
 Start Apache Tomcat (see [instructions](https://www.ntu.edu.sg/home/ehchua/programming/howto/Tomcat_HowTo.html#zz-2.4)) and navigate your web browser to http://localhost:8080/sutdbank.
 
-You should be able to log in with the default account `staff_1/123456`.
+You should be able to log in with the default accounts `staff_1/123456`.
