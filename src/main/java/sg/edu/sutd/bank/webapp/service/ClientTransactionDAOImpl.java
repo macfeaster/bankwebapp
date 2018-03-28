@@ -40,8 +40,8 @@ public class ClientTransactionDAOImpl extends AbstractDAOImpl implements ClientT
 			ps.setString(1, clientTransaction.getTransCode());
 			ps.setBigDecimal(2, clientTransaction.getAmount());
 			ps.setInt(3, clientTransaction.getUser().getId());
-			ps.setInt(4, clientTransaction.getToAccount().getId());
-			ps.setInt(5, clientTransaction.getFromAccount().getId());
+			ps.setInt(4, clientTransaction.getFromAccount().getId());
+			ps.setInt(5, clientTransaction.getToAccount().getId());
 			ps.setString(6, clientTransaction.getStatus().toString());
 			executeInsert(clientTransaction, ps);
 		} catch (SQLException e) {
