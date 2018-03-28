@@ -4,7 +4,7 @@
 <header class="sutd-template">
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark" style="background: #334e76 !important; border: none; box-shadow: 0 2px 5px rgba(0, 0, 0, .2);">
 		<div class="container">
-			<a class="navbar-brand" href="#"><img alt="SUTD Logo" style="max-width: 100px;" src="<c:url value="/resources/img/sutd-logo.png" />"></a>
+			<a class="navbar-brand" href="/"><img alt="SUTD Logo" style="max-width: 100px;" src="<c:url value="/resources/img/sutd-logo.png" />"></a>
 
 			<div class="navbar-nav">
 				<c:if test="${empty sessionScope.authenticatedUser}">

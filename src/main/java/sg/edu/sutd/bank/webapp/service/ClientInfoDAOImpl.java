@@ -93,7 +93,7 @@ public class ClientInfoDAOImpl extends AbstractDAOImpl implements ClientInfoDAO 
 		Connection conn = connectDB();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		ClientInfo clientInfo = null;
+		ClientInfo clientInfo;
 		try {
 			ps = conn.prepareStatement(
 					"SELECT info.*, acc.*, u.* FROM client_info info, \"users\" u, client_account acc WHERE acc.user_id = u.id and info.user_id = u.id and u.user_name=?");
@@ -102,7 +102,7 @@ public class ClientInfoDAOImpl extends AbstractDAOImpl implements ClientInfoDAO 
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				User user = new User();
-				user.setId(rs.getInt("id"));
+				user.setId(rs.getInt("user_id"));
 				user.setUserName(rs.getString("user_name"));
 				ClientAccount account = new ClientAccount();
 				account.setUser(user);
@@ -120,10 +120,14 @@ public class ClientInfoDAOImpl extends AbstractDAOImpl implements ClientInfoDAO 
 		} finally {
 			closeDb(conn, ps, rs);
 		}
-		if (clientInfo != null) {
-			List<ClientTransaction> transactions = transactionDAO.load(clientInfo.getUser());
-			clientInfo.setTransactions(transactions);
-		}
+
+		System.out.println(clientInfo.getUser());
+
+		List<ClientTransaction> transactions = transactionDAO.load(clientInfo.getUser());
+		clientInfo.setTransactions(transactions);
+
+		System.out.println(transactions);
+
 		return clientInfo;
 	}
 	
