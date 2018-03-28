@@ -24,6 +24,8 @@ public interface TransactionCodesDAO {
 
 	void create(List<String> codes, int userId) throws ServiceException;
 
-	TransactionCode findByCode(String code) throws ServiceException;
+	TransactionCode findByCode(String code, int userId) throws ServiceException;
+
+	void update(TransactionCode transactionCode) throws ServiceException;
 
 }

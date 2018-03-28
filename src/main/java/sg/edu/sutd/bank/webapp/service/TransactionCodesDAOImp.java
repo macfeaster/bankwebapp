@@ -59,28 +59,44 @@ public class TransactionCodesDAOImp extends AbstractDAOImpl implements Transacti
 	}
 
 	@Override
-	public TransactionCode findByCode(String code) throws ServiceException {
+	public TransactionCode findByCode(String code, int userId) throws ServiceException {
 		Connection conn = connectDB();
 		PreparedStatement ps;
 		ResultSet rs;
 
 		try {
-			String query = "SELECT * FROM transaction_code tc JOIN \"users\" u ON u.id = tc.user_id WHERE code = ? AND used = FALSE";
+			String query = "SELECT * FROM transaction_code tc JOIN \"users\" u ON u.id = tc.user_id " +
+					"WHERE code = ? AND user_id = ? AND used = FALSE";
 
 			ps = prepareStmt(conn, query);
 			ps.setString(1, code);
+			ps.setInt(2, userId);
 			rs = ps.executeQuery();
 
 			if (!rs.next())
 				return null;
 
-			User user = new User(rs.getString("user_name"), null, UserStatus.valueOf(rs.getString("status")));
+			User user = new User(userId, rs.getString("user_name"), null, UserStatus.valueOf(rs.getString("status")));
 
-			return new TransactionCode(code, user, rs.getBoolean("used"));
+			return new TransactionCode(rs.getInt("id"), code, user, rs.getBoolean("used"));
 
 		} catch (SQLException e) {
 			throw ServiceException.wrap(e);
 		}
 	}
 
+	@Override
+	public void update(TransactionCode transactionCode) throws ServiceException {
+		Connection conn = connectDB();
+		PreparedStatement ps;
+
+		try {
+			ps = prepareStmt(conn, "UPDATE transaction_code SET used = ? WHERE id = ?");
+			ps.setBoolean(1, transactionCode.isUsed());
+			ps.setInt(2, transactionCode.getId());
+			executeUpdate(ps);
+		} catch (SQLException e) {
+			throw ServiceException.wrap(e);
+		}
+	}
 }
