@@ -24,7 +24,7 @@
 					<label for="amount" class="control-label">Amount</label>
 					<input type="text" class="form-control" id="amount" name="amount" placeholder="amount">
 				</div>
-				<button id="createTransBtn" type="submit" class="btn btn-default">Submit</button>
+				<button id="createTransBtn" type="submit" class="btn btn-primary">Submit</button>
 			</form>
 		</div>
 	</div>

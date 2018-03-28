@@ -97,7 +97,7 @@
 					<input type="password" class="form-control" id="password" name="password" placeholder="Password">
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				</div>
-				<button id="registerBtn" type="submit" value="register" class="btn btn-default">Register</button>
+				<button id="registerBtn" type="submit" value="register" class="btn btn-primary">Register</button>
 			</form>
 		</div>
 		</div>

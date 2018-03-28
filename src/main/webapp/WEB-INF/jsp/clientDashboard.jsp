@@ -16,7 +16,7 @@
 		</div>
 		<div id="transHistory">
 			<h3>Transaction History:  </h3>
-			<table border="1" cellpadding="5" class="commonTable">
+			<table cellpadding="5" class="table table-striped">
 				<tr>
 					<th style="width: 150px">Transaction code</th>
 					<th style="width: 150px">To (account number)</th>
@@ -42,7 +42,7 @@
 		</div>
 		<div id="createTransaction" style="padding-top: 50px">
 			<form id="registrationForm" action="newTransaction" method="get">
-				<button id="createTransBtn" type="submit" class="btn btn-default">New Transaction</button>
+				<button id="createTransBtn" type="submit" class="btn btn-primary">New Transaction</button>
 			</form>
 		</div>
 	</div>

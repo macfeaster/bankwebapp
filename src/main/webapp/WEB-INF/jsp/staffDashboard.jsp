@@ -50,7 +50,7 @@
 				<!-- Record internal toolbar -->
 				<div id="submitBar">
 					<div class="btn-group toolbar" role="group">
-						<button id="regDecisionBtn" type="submit" value="staffDashboard" class="btn btn-default">Update</button>
+						<button id="regDecisionBtn" type="submit" value="staffDashboard" class="btn btn-primary">Update</button>
 					</div>
 				</div>
 			</form>
@@ -91,7 +91,7 @@
 					<input type="hidden" name="actionType" value="transactionDecisionAction">
 					<div id="submitBar">
 						<div class="btn-group toolbar" role="group">
-							<button id="transDecisionBtn" type="submit" value="staffDashboard" class="btn btn-default">Update</button>
+							<button id="transDecisionBtn" type="submit" value="staffDashboard" class="btn btn-primary">Update</button>
 						</div>
 					</div>
 			</form>
