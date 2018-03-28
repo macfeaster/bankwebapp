@@ -21,6 +21,7 @@ import sg.edu.sutd.bank.webapp.model.ClientTransaction;
 import sg.edu.sutd.bank.webapp.model.TransactionStatus;
 import sg.edu.sutd.bank.webapp.model.User;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -127,16 +128,26 @@ public class ClientAccountDAOImpl extends AbstractDAOImpl implements ClientAccou
 		try {
 			for (ClientTransaction transaction : transactions) {
 				if (transaction.getStatus() == TransactionStatus.APPROVED) {
+					// Fetch the transaction amount
+					PreparedStatement ps = prepareStmt(conn, "SELECT * FROM client_transaction WHERE id = ?");
+					ps.setInt(1, transaction.getId());
+					ResultSet rs = ps.executeQuery();
+					rs.next();
+					transaction.setFromAccount(new ClientAccount(rs.getInt("from_account")));
+					transaction.setToAccount(new ClientAccount(rs.getInt("to_account")));
+					BigDecimal amount = rs.getBigDecimal("amount");
+					transaction.setAmount(amount);
+
 					// Deduct money from sender's account
 					PreparedStatement psf = prepareStmt(conn, "UPDATE client_account SET amount = amount - ? WHERE id = ? AND amount >= ?");
-					psf.setBigDecimal(1, transaction.getAmount());
-					psf.setInt(2, transaction.getId());
-					psf.setBigDecimal(3, transaction.getAmount());
+					psf.setBigDecimal(1, amount);
+					psf.setInt(2, transaction.getFromAccount().getId());
+					psf.setBigDecimal(3, amount);
 
 					// Insert money into recipient's account
 					PreparedStatement pst = prepareStmt(conn, "UPDATE client_account SET amount = amount + ? WHERE id = ?");
-					pst.setBigDecimal(1, transaction.getAmount());
-					pst.setInt(2, transaction.getId());
+					pst.setBigDecimal(1, amount);
+					pst.setInt(2, transaction.getToAccount().getId());
 
 					int from = psf.executeUpdate();
 					int to = pst.executeUpdate();

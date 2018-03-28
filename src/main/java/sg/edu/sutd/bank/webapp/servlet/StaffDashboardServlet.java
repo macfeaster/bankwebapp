@@ -150,7 +150,7 @@ public class StaffDashboardServlet extends DefaultServlet {
 			throws ServletException, IOException {
 		String[] decisions = req.getParameterValues("decision");
 		int[] transIds = toIntegerArray(req.getParameterValues("trans_id"));
-		List<ClientTransaction> transactions = new ArrayList<ClientTransaction>();
+		List<ClientTransaction> transactions = new ArrayList<>();
 		for (int i = 0; i < transIds.length; i++) {
 			int transId = transIds[i];
 			Decision decision = Decision.valueOf(decisions[i]);

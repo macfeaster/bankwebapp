@@ -10,7 +10,7 @@
 	<div class="container">
 		<div id="messageBox" class="hidden"></div>
 			<c:if test="${not empty req_error}">
-				<div id="errorMsg">
+				<div id="errorMsg" class="alert alert-danger">
 					<p class="text-danger">${req_error}</p>
 				</div>
 			</c:if>
@@ -48,7 +48,7 @@
 					</table>
 				<input type="hidden" name="actionType" value="registrationDecisionAction">
 				<!-- Record internal toolbar -->
-				<div id="submitBar">
+				<div>
 					<div class="btn-group toolbar" role="group">
 						<button id="regDecisionBtn" type="submit" value="staffDashboard" class="btn btn-primary">Update</button>
 					</div>
@@ -59,26 +59,30 @@
 				<div>Empty</div>	
 			</c:if>
 		</div>
+
+		<hr />
 		
-		<div id="transactionList" >
-			<h2>Client Transactions</h2>
+		<div id="transactionList">
+			<h1>Client Transactions</h1>
 			<c:if test="${not empty transList}">
 				<form id="editTransactionForm" action="staffDashboard" method="post" >
-					<table border="1" cellpadding="5" class="commonTable">
+					<table cellpadding="5" class="table table-striped">
 						<tr>
-							<th style="width: 150px">Transaction code</th>
-							<th style="width: 150px">To (account number)</th>
-							<th style="width: 150px">Datatime</th>
-							<th style="width: 150px">Amount</th>
-							<th style="width: 150px">Decision</th>
+							<th>Transaction code</th>
+							<th>From account</th>
+							<th>To account</th>
+							<th>Datatime</th>
+							<th>Amount</th>
+							<th>Decision</th>
 						</tr>
 						<c:forEach var="trans" items="${transList}">
 							<tr>
 								<td>${trans.transCode}</td>
-								<td>${trans.toAccountNum}</td>
+								<td>CC-216-${trans.fromAccount.id}</td>
+								<td>CC-216-${trans.toAccount.id}</td>
 								<td>${trans.dateTime}</td>
 								<td>${trans.amount}</td>
-								<td><select name="decision" id="staffDecision">
+								<td><select name="decision">
 										<option value="waiting"></option>
 										<option value="approve">Approve</option>
 										<option value="decline">Decline</option>
