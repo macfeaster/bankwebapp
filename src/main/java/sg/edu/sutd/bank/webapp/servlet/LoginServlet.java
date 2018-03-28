@@ -15,19 +15,20 @@ https://opensource.org/licenses/ECL-2.0
 
 package sg.edu.sutd.bank.webapp.servlet;
 
-import java.io.IOException;
-import static sg.edu.sutd.bank.webapp.servlet.ServletPaths.*;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import sg.edu.sutd.bank.webapp.commons.ServiceException;
 import sg.edu.sutd.bank.webapp.model.User;
 import sg.edu.sutd.bank.webapp.model.UserStatus;
 import sg.edu.sutd.bank.webapp.service.UserDAO;
 import sg.edu.sutd.bank.webapp.service.UserDAOImpl;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+
+import static sg.edu.sutd.bank.webapp.servlet.ServletPaths.*;
 
 
 @WebServlet(LOGIN)
@@ -54,6 +55,7 @@ public class LoginServlet extends DefaultServlet {
 			}
 			sendError(req, "Invalid username/password!");
 		} catch(ServletException | ServiceException ex) {
+			ex.printStackTrace();
 			sendError(req, ex.getMessage());
 		}
 		forward(req, resp);

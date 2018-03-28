@@ -15,18 +15,17 @@ https://opensource.org/licenses/ECL-2.0
 
 package sg.edu.sutd.bank.webapp.service;
 
-import java.util.Properties;
-import java.util.ResourceBundle;
+import sg.edu.sutd.bank.webapp.commons.ServiceException;
 
+import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
-import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-import sg.edu.sutd.bank.webapp.commons.ServiceException;
+import java.util.Properties;
+import java.util.ResourceBundle;
 
 public class EmailServiceImp implements EmailService {
 	private static Properties emailProperties;
@@ -47,7 +46,7 @@ public class EmailServiceImp implements EmailService {
 
 	@Override
 	public void sendMail(String toAddr, String subject, String msg) throws ServiceException {
-		Session session = Session.getDefaultInstance(emailProperties, new javax.mail.Authenticator() {
+		Session session = Session.getDefaultInstance(emailProperties, new Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(userName, password);
 			}
@@ -58,7 +57,7 @@ public class EmailServiceImp implements EmailService {
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toAddr));
 			message.setSubject(subject);
 			message.setText(msg);
-			Transport.send(message);
+			// Transport.send(message);
 		} catch (MessagingException e) {
 			throw ServiceException.wrap(e);
 		}

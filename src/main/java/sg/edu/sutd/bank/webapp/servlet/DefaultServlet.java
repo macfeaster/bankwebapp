@@ -15,8 +15,6 @@ https://opensource.org/licenses/ECL-2.0
 
 package sg.edu.sutd.bank.webapp.servlet;
 
-import java.io.IOException;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,6 +22,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 
 @WebServlet("/")
@@ -86,6 +85,6 @@ public class DefaultServlet extends HttpServlet {
 	}
 	
 	protected String getRedirectPath(String template) {
-		return "/sutdbank" + template;
+		return template;
 	}
 }

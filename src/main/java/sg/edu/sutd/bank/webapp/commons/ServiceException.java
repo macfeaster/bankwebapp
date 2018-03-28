@@ -24,6 +24,7 @@ public class ServiceException extends Exception {
 	}
 	
 	public static ServiceException wrap(Throwable e) {
+		e.printStackTrace();
 		return new ServiceException(e);
 	}
 }

@@ -14,17 +14,6 @@ https://opensource.org/licenses/ECL-2.0
  */
 
 package sg.edu.sutd.bank.webapp.servlet;
-import static sg.edu.sutd.bank.webapp.servlet.ServletPaths.STAFF_DASHBOARD_PAGE;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import sg.edu.sutd.bank.webapp.commons.Constants;
 import sg.edu.sutd.bank.webapp.commons.ServiceException;
 import sg.edu.sutd.bank.webapp.commons.StringUtils;
@@ -34,6 +23,7 @@ import sg.edu.sutd.bank.webapp.model.ClientTransaction;
 import sg.edu.sutd.bank.webapp.model.TransactionStatus;
 import sg.edu.sutd.bank.webapp.model.User;
 import sg.edu.sutd.bank.webapp.model.UserStatus;
+import sg.edu.sutd.bank.webapp.service.AuthorizationService;
 import sg.edu.sutd.bank.webapp.service.ClientAccountDAO;
 import sg.edu.sutd.bank.webapp.service.ClientAccountDAOImpl;
 import sg.edu.sutd.bank.webapp.service.ClientInfoDAO;
@@ -46,6 +36,16 @@ import sg.edu.sutd.bank.webapp.service.TransactionCodesDAO;
 import sg.edu.sutd.bank.webapp.service.TransactionCodesDAOImp;
 import sg.edu.sutd.bank.webapp.service.UserDAO;
 import sg.edu.sutd.bank.webapp.service.UserDAOImpl;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static sg.edu.sutd.bank.webapp.servlet.ServletPaths.STAFF_DASHBOARD_PAGE;
 
 @WebServlet(STAFF_DASHBOARD_PAGE)
 public class StaffDashboardServlet extends DefaultServlet {
@@ -62,6 +62,8 @@ public class StaffDashboardServlet extends DefaultServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		AuthorizationService.authenticatedWithRole(req, "staff");
+
 		try {
 			List<ClientInfo> accountList = clientInfoDAO.loadWaitingList();
 			req.getSession().setAttribute("registrationList", accountList);
@@ -75,6 +77,8 @@ public class StaffDashboardServlet extends DefaultServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		AuthorizationService.authenticatedWithRole(req, "staff");
+
 		String actionType = req.getParameter("actionType");
 		if (REGISTRATION_DECISION_ACTION.endsWith(actionType)) {
 			try {
@@ -93,7 +97,7 @@ public class StaffDashboardServlet extends DefaultServlet {
 		String[] decisions = req.getParameterValues("decision");
 		int[] userIds = toIntegerArray(req.getParameterValues("user_id"));
 		String[] userEmails = req.getParameterValues("user_email");
-		List<User> users = new ArrayList<User>();
+		List<User> users = new ArrayList<>();
 		for (int i = 0; i < userIds.length; i++) {
 			int userId = userIds[i];
 			Decision decision = Decision.valueOf(decisions[i]);

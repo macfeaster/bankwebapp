@@ -15,19 +15,19 @@ https://opensource.org/licenses/ECL-2.0
 
 package sg.edu.sutd.bank.webapp.servlet;
 
-import static sg.edu.sutd.bank.webapp.servlet.ServletPaths.CLIENT_DASHBOARD_PAGE;
-
-import java.io.IOException;
+import sg.edu.sutd.bank.webapp.commons.ServiceException;
+import sg.edu.sutd.bank.webapp.model.ClientInfo;
+import sg.edu.sutd.bank.webapp.service.AuthorizationService;
+import sg.edu.sutd.bank.webapp.service.ClientInfoDAO;
+import sg.edu.sutd.bank.webapp.service.ClientInfoDAOImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-import sg.edu.sutd.bank.webapp.commons.ServiceException;
-import sg.edu.sutd.bank.webapp.model.ClientInfo;
-import sg.edu.sutd.bank.webapp.service.ClientInfoDAO;
-import sg.edu.sutd.bank.webapp.service.ClientInfoDAOImpl;
+import static sg.edu.sutd.bank.webapp.servlet.ServletPaths.CLIENT_DASHBOARD_PAGE;
 
 @WebServlet(CLIENT_DASHBOARD_PAGE)
 public class ClientDashboardServlet extends DefaultServlet {
@@ -36,6 +36,8 @@ public class ClientDashboardServlet extends DefaultServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		AuthorizationService.authenticatedWithRole(req, "client");
+
 		try {
 			ClientInfo clientInfo = clientInforDao.loadAccountInfo(req.getRemoteUser());
 			req.getSession().setAttribute("clientInfo", clientInfo);
