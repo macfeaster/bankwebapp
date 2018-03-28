@@ -96,22 +96,34 @@ public class ClientInfoDAOImpl extends AbstractDAOImpl implements ClientInfoDAO 
 		ClientInfo clientInfo;
 		try {
 			ps = conn.prepareStatement(
-					"SELECT info.*, acc.*, u.* FROM client_info info, \"users\" u, client_account acc WHERE acc.user_id = u.id and info.user_id = u.id and u.user_name=?");
-			int idx = 1;
-			ps.setString(idx ++, userName);
+					"SELECT info.*, u.* FROM client_info info, \"users\" u WHERE info.user_id = u.id and u.user_name=?");
+			ps.setString(1, userName);
 			rs = ps.executeQuery();
+
 			if (rs.next()) {
 				User user = new User();
 				user.setId(rs.getInt("user_id"));
 				user.setUserName(rs.getString("user_name"));
-				ClientAccount account = new ClientAccount();
-				account.setUser(user);
-				account.setId(rs.getInt("id"));
-				account.setAmount(rs.getBigDecimal("amount"));
+
 				clientInfo = new ClientInfo();
 				clientInfo.setId(rs.getInt("id"));
 				clientInfo.setUser(user);
-				clientInfo.setAccount(account);
+
+				PreparedStatement psa = conn.prepareStatement("SELECT * FROM client_account acc WHERE acc.user_id = ?");
+				psa.setInt(1, rs.getInt("user_id"));
+
+				ResultSet rsa = psa.executeQuery();
+				List<ClientAccount> accounts = new ArrayList<>();
+
+				while (rsa.next()) {
+					ClientAccount account = new ClientAccount();
+					account.setUser(user);
+					account.setId(rsa.getInt("id"));
+					account.setAmount(rsa.getBigDecimal("amount"));
+					accounts.add(account);
+				}
+
+				clientInfo.setAccounts(accounts);
 			} else {
 				throw new SQLException("No data found for user " + userName);
 			}

@@ -29,7 +29,7 @@ public class ClientInfo extends AbstractIdEntity {
 	private String email;
 	private User user;
 	private List<ClientTransaction> transactions;
-	private ClientAccount account;
+	private List<ClientAccount> accounts;
 
 	public String getFullName() {
 		return fullName;
@@ -103,12 +103,12 @@ public class ClientInfo extends AbstractIdEntity {
 		this.transactions = transactions;
 	}
 
-	public ClientAccount getAccount() {
-		return account;
+	public List<ClientAccount> getAccounts() {
+		return accounts;
 	}
 
-	public void setAccount(ClientAccount account) {
-		this.account = account;
+	public void setAccounts(List<ClientAccount> accounts) {
+		this.accounts = accounts;
 	}
 	
 }

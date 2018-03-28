@@ -35,13 +35,14 @@ public class ClientTransactionDAOImpl extends AbstractDAOImpl implements ClientT
 		Connection conn = connectDB();
 		PreparedStatement ps;
 		try {
-			ps = prepareStmt(conn, "INSERT INTO client_transaction(trans_code, amount, user_id, from_account, to_account)"
+			ps = prepareStmt(conn, "INSERT INTO client_transaction(trans_code, amount, user_id, from_account, to_account, status)"
 					+ " VALUES(?, ?, ?, ?, ?)");
 			ps.setString(1, clientTransaction.getTransCode());
 			ps.setBigDecimal(2, clientTransaction.getAmount());
 			ps.setInt(3, clientTransaction.getUser().getId());
 			ps.setInt(4, clientTransaction.getToAccount().getId());
 			ps.setInt(5, clientTransaction.getFromAccount().getId());
+			ps.setString(6, clientTransaction.getStatus().toString());
 			executeInsert(clientTransaction, ps);
 		} catch (SQLException e) {
 			throw ServiceException.wrap(e);

@@ -3,19 +3,36 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <%@include file="pageHeader.jsp"%>
-  <body>
-	<%@include file="header.jsp"%>
-	
-	<main id="content" class="mainContent sutd-template" role="main">
+<%@include file="pageHeader.jsp"%>
+<body>
+<%@include file="header.jsp"%>
+
+<main id="content" class="mainContent sutd-template" role="main">
 	<div class="container">
 		<%@include file="errorMessage.jsp"%>
 		<div id="accountBalance">
-			<h3>Account Balance:  </h3>
-			<div>${clientInfo.account.amount}</div>
+			<h1>Accounts</h1>
+
+			<table cellpadding="5" class="table table-striped">
+				<tr>
+					<th>Account Type</th>
+					<th>Account Number</th>
+					<th>Balance</th>
+				</tr>
+
+				<c:forEach var="acc" items="${clientInfo.accounts}">
+					<tr>
+						<td>Changi College eAng Bao Savings Account</td>
+						<td>CC-216-${acc.id}</td>
+						<td>$${acc.amount}</td>
+					</tr>
+				</c:forEach>
+			</table>
+
 		</div>
+		<hr />
 		<div id="transHistory">
-			<h3>Transaction History:  </h3>
+			<h1>Transactions</h1>
 			<table cellpadding="5" class="table table-striped">
 				<tr>
 					<th>Transaction code</th>
@@ -28,8 +45,8 @@
 				<c:forEach var="trans" items="${clientInfo.transactions}">
 					<tr>
 						<td>${trans.transCode}</td>
-						<td>${trans.fromAccount.id}</td>
-						<td>${trans.toAccount.id}</td>
+						<td>CC-216-${trans.fromAccount.id}</td>
+						<td>CC-216-${trans.toAccount.id}</td>
 						<td>${trans.dateTime}</td>
 						<td>${trans.amount}</td>
 						<c:if test="${empty trans.status}">
@@ -48,6 +65,6 @@
 			</form>
 		</div>
 	</div>
-	</main>
-  </body>
+</main>
+</body>
 </html>
