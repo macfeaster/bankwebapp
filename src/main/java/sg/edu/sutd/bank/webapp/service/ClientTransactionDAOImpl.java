@@ -36,7 +36,7 @@ public class ClientTransactionDAOImpl extends AbstractDAOImpl implements ClientT
 		PreparedStatement ps;
 		try {
 			ps = prepareStmt(conn, "INSERT INTO client_transaction(trans_code, amount, user_id, from_account, to_account, status)"
-					+ " VALUES(?, ?, ?, ?, ?)");
+					+ " VALUES(?, ?, ?, ?, ?, ?)");
 			ps.setString(1, clientTransaction.getTransCode());
 			ps.setBigDecimal(2, clientTransaction.getAmount());
 			ps.setInt(3, clientTransaction.getUser().getId());
