@@ -15,27 +15,33 @@ https://opensource.org/licenses/ECL-2.0
 
 package sg.edu.sutd.bank.webapp.servlet;
 
-import static sg.edu.sutd.bank.webapp.servlet.ServletPaths.NEW_TRANSACTION;
-
-import java.io.IOException;
-import java.math.BigDecimal;
+import sg.edu.sutd.bank.webapp.commons.ServiceException;
+import sg.edu.sutd.bank.webapp.model.ClientTransaction;
+import sg.edu.sutd.bank.webapp.model.User;
+import sg.edu.sutd.bank.webapp.service.AuthorizationService;
+import sg.edu.sutd.bank.webapp.service.ClientTransactionDAO;
+import sg.edu.sutd.bank.webapp.service.ClientTransactionDAOImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.math.BigDecimal;
 
-import sg.edu.sutd.bank.webapp.commons.ServiceException;
-import sg.edu.sutd.bank.webapp.model.ClientTransaction;
-import sg.edu.sutd.bank.webapp.model.User;
-import sg.edu.sutd.bank.webapp.service.ClientTransactionDAO;
-import sg.edu.sutd.bank.webapp.service.ClientTransactionDAOImpl;
+import static sg.edu.sutd.bank.webapp.servlet.ServletPaths.NEW_TRANSACTION;
 
 @WebServlet(NEW_TRANSACTION)
 public class NewTransactionServlet extends DefaultServlet {
 	private static final long serialVersionUID = 1L;
 	private ClientTransactionDAO clientTransactionDAO = new ClientTransactionDAOImpl();
-	
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		AuthorizationService.authenticatedWithRole(req, "client");
+		forward(req, resp);
+	}
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
