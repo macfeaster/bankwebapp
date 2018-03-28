@@ -20,6 +20,7 @@ Changes made from the starter code, without any particular ordering:
     + If the transaction is greater than $10,000, no funds will be transferred, and the transaction will be pending a bank employee’s approval
 
 * **Feature:** When employees accept transactions, funds are transferred
+    + Funds are only transferred if they are available, otherwise the transaction will just be accepted with no money changing hands
 
 * **Feature:** Each client can hold more than one account
     + Balances can be viewed for all accounts
