@@ -18,16 +18,18 @@
 			<h3>Transaction History:  </h3>
 			<table cellpadding="5" class="table table-striped">
 				<tr>
-					<th style="width: 150px">Transaction code</th>
-					<th style="width: 150px">To (account number)</th>
-					<th style="width: 150px">Datatime</th>
-					<th style="width: 150px">Amount</th>
-					<th style="width: 150px">Status</th>
+					<th>Transaction code</th>
+					<th>From account</th>
+					<th>To account</th>
+					<th>Date</th>
+					<th>Amount</th>
+					<th>Status</th>
 				</tr>
 				<c:forEach var="trans" items="${clientInfo.transactions}">
 					<tr>
 						<td>${trans.transCode}</td>
-						<td>${trans.toAccountNum}</td>
+						<td>${trans.fromAccount.id}</td>
+						<td>${trans.toAccount.id}</td>
 						<td>${trans.dateTime}</td>
 						<td>${trans.amount}</td>
 						<c:if test="${empty trans.status}">

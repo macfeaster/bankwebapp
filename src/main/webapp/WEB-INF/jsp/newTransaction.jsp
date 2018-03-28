@@ -3,15 +3,22 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <%@include file="pageHeader.jsp"%>
-  <body>
-	<%@include file="header.jsp"%>
-	
-	<main id="content" class="mainContent sutd-template" role="main">
+<%@include file="pageHeader.jsp"%>
+<body>
+<%@include file="header.jsp"%>
+
+<main id="content" class="mainContent sutd-template" role="main">
 	<div class="container">
 		<%@include file="errorMessage.jsp"%>
 		<div id="createTransaction">
 			<form id="newTransactionForm" action="newTransaction" method="post">
+				<div class="form-group">
+					<select class="form-control" name="fromAccountNum">
+						<c:forEach var="acc" items="${accounts}">
+							<option value="${acc.id}">${acc.id} - $${acc.amount}</option>
+						</c:forEach>
+					</select>
+				</div>
 				<div id="input-group-transcode" class="form-group">
 					<label for="transcode" class="control-label">Transaction code</label>
 					<input type="text" class="form-control" id="transcode" name="transcode" placeholder="Transaction Code">
@@ -28,6 +35,6 @@
 			</form>
 		</div>
 	</div>
-	</main>
-  </body>
+</main>
+</body>
 </html>
