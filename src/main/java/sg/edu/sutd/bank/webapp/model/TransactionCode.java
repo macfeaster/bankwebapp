@@ -8,7 +8,8 @@ public class TransactionCode extends AbstractIdEntity {
 
 	public TransactionCode() {}
 
-	public TransactionCode(String code, User user, boolean used) {
+	public TransactionCode(int id, String code, User user, boolean used) {
+		this.id = id;
 		this.code = code;
 		this.user = user;
 		this.used = used;

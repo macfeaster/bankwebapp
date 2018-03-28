@@ -16,7 +16,7 @@ https://opensource.org/licenses/ECL-2.0
 package sg.edu.sutd.bank.webapp.model;
 
 public class AbstractIdEntity {
-	private Integer id;
+	protected Integer id;
 
 	public Integer getId() {
 		return id;

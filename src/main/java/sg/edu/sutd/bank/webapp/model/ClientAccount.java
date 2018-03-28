@@ -21,6 +21,12 @@ public class ClientAccount extends AbstractIdEntity {
 	private User user;
 	private BigDecimal amount;
 
+	public ClientAccount() {}
+
+	public ClientAccount(int accountId) {
+		this.id = accountId;
+	}
+
 	public User getUser() {
 		return user;
 	}
