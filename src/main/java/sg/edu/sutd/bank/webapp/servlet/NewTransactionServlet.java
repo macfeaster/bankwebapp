@@ -44,6 +44,8 @@ public class NewTransactionServlet extends DefaultServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		AuthorizationService.authenticatedWithRole(req, "client");
+
 		try {
 			ClientTransaction clientTransaction = new ClientTransaction();
 			User user = new User(getUserId(req));

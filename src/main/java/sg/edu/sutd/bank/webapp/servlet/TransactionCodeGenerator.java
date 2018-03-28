@@ -22,7 +22,7 @@ import java.util.List;
 public class TransactionCodeGenerator {
 
 	public static List<String> generateCodes(int num) {
-		List<String> codes = new ArrayList<String>(num);
+		List<String> codes = new ArrayList<>(num);
 		for (int idx = 0; idx < num; ++idx) {
 			UID code = new UID();
 			codes.add(code.toString());
