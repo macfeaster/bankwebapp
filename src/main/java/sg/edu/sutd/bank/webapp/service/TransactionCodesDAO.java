@@ -15,12 +15,15 @@ https://opensource.org/licenses/ECL-2.0
 
 package sg.edu.sutd.bank.webapp.service;
 
-import java.util.List;
-
 import sg.edu.sutd.bank.webapp.commons.ServiceException;
+import sg.edu.sutd.bank.webapp.model.TransactionCode;
+
+import java.util.List;
 
 public interface TransactionCodesDAO {
 
 	void create(List<String> codes, int userId) throws ServiceException;
+
+	TransactionCode findByCode(String code) throws ServiceException;
 
 }

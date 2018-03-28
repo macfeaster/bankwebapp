@@ -15,17 +15,17 @@ https://opensource.org/licenses/ECL-2.0
 
 package sg.edu.sutd.bank.webapp.service;
 
+import sg.edu.sutd.bank.webapp.commons.ServiceException;
+import sg.edu.sutd.bank.webapp.model.ClientTransaction;
+import sg.edu.sutd.bank.webapp.model.TransactionStatus;
+import sg.edu.sutd.bank.webapp.model.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import sg.edu.sutd.bank.webapp.commons.ServiceException;
-import sg.edu.sutd.bank.webapp.model.ClientTransaction;
-import sg.edu.sutd.bank.webapp.model.TransactionStatus;
-import sg.edu.sutd.bank.webapp.model.User;
 
 public class ClientTransactionDAOImpl extends AbstractDAOImpl implements ClientTransactionDAO {
 
@@ -55,10 +55,13 @@ public class ClientTransactionDAOImpl extends AbstractDAOImpl implements ClientT
 		try {
 			ps = conn.prepareStatement(
 					"SELECT * FROM client_transaction WHERE user_id = ?");
-			int idx = 1;
-			ps.setInt(idx++, user.getId());
+
+			ps.setInt(1, user.getId());
+
+			System.out.println("SELECT * FROM client_transaction WHERE user_id = " + user.getId());
+
 			rs = ps.executeQuery();
-			List<ClientTransaction> transactions = new ArrayList<ClientTransaction>();
+			List<ClientTransaction> transactions = new ArrayList<>();
 			while (rs.next()) {
 				ClientTransaction trans = new ClientTransaction();
 				trans.setId(rs.getInt("id"));

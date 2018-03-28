@@ -15,12 +15,16 @@ https://opensource.org/licenses/ECL-2.0
 
 package sg.edu.sutd.bank.webapp.service;
 
+import sg.edu.sutd.bank.webapp.commons.ServiceException;
+import sg.edu.sutd.bank.webapp.model.TransactionCode;
+import sg.edu.sutd.bank.webapp.model.User;
+import sg.edu.sutd.bank.webapp.model.UserStatus;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
-import sg.edu.sutd.bank.webapp.commons.ServiceException;
 
 public class TransactionCodesDAOImp extends AbstractDAOImpl implements TransactionCodesDAO {
 
@@ -49,6 +53,31 @@ public class TransactionCodesDAOImp extends AbstractDAOImpl implements Transacti
 			if (rowNum == 0) {
 				throw new SQLException("Update failed, no rows affected!");
 			}
+		} catch (SQLException e) {
+			throw ServiceException.wrap(e);
+		}
+	}
+
+	@Override
+	public TransactionCode findByCode(String code) throws ServiceException {
+		Connection conn = connectDB();
+		PreparedStatement ps;
+		ResultSet rs;
+
+		try {
+			String query = "SELECT * FROM transaction_code tc JOIN \"users\" u ON u.id = tc.user_id WHERE code = ? AND used = FALSE";
+
+			ps = prepareStmt(conn, query);
+			ps.setString(1, code);
+			rs = ps.executeQuery();
+
+			if (!rs.next())
+				return null;
+
+			User user = new User(rs.getString("user_name"), null, UserStatus.valueOf(rs.getString("status")));
+
+			return new TransactionCode(code, user, rs.getBoolean("used"));
+
 		} catch (SQLException e) {
 			throw ServiceException.wrap(e);
 		}

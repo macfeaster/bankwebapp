@@ -24,6 +24,12 @@ public class User extends AbstractIdEntity {
 	public User() {
 	}
 
+	public User(String userName, String password, UserStatus status) {
+		this.userName = userName;
+		this.password = password;
+		this.status = status;
+	}
+
 	public User(int userId) {
 		setId(userId);
 	}

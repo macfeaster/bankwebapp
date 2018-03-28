@@ -17,10 +17,13 @@ package sg.edu.sutd.bank.webapp.servlet;
 
 import sg.edu.sutd.bank.webapp.commons.ServiceException;
 import sg.edu.sutd.bank.webapp.model.ClientTransaction;
+import sg.edu.sutd.bank.webapp.model.TransactionCode;
 import sg.edu.sutd.bank.webapp.model.User;
 import sg.edu.sutd.bank.webapp.service.AuthorizationService;
 import sg.edu.sutd.bank.webapp.service.ClientTransactionDAO;
 import sg.edu.sutd.bank.webapp.service.ClientTransactionDAOImpl;
+import sg.edu.sutd.bank.webapp.service.TransactionCodesDAO;
+import sg.edu.sutd.bank.webapp.service.TransactionCodesDAOImp;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -47,6 +50,12 @@ public class NewTransactionServlet extends DefaultServlet {
 		AuthorizationService.authenticatedWithRole(req, "client");
 
 		try {
+			TransactionCodesDAO tcd = new TransactionCodesDAOImp();
+			TransactionCode tc = tcd.findByCode(req.getParameter("transcode"));
+
+			if (tc == null)
+				throw ServiceException.wrap(new IllegalArgumentException("Invalid or used transaction code."));
+
 			ClientTransaction clientTransaction = new ClientTransaction();
 			User user = new User(getUserId(req));
 			clientTransaction.setUser(user);
