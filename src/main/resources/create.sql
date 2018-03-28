@@ -31,7 +31,7 @@ CREATE TABLE client_info (
   user_id int DEFAULT NULL,
   PRIMARY KEY (Id)
   ,
-  CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES "users" (id) ON DELETE NO ACTION ON UPDATE NO ACTION
 )  ;
 
 CREATE INDEX user_id_idx ON client_info (user_id);
@@ -48,8 +48,9 @@ CREATE TABLE client_transaction (
   status varchar(45) DEFAULT NULL,
   datetime timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   amount decimal(19,4) DEFAULT NULL,
-  user_id int NOT NULL,
-  to_account_num varchar(45) NOT NULL,
+  user_id int NOT NULL REFERENCES "users" (id),
+  from_account int NOT NULL REFERENCES "client_account" (id),
+  to_account int NOT NULL REFERENCES "client_account" (id),
   PRIMARY KEY (id)
 )  ;
 
@@ -71,8 +72,8 @@ CREATE TABLE transaction_code (
 -- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS "user";
-CREATE TABLE "user" (
+DROP TABLE IF EXISTS "users";
+CREATE TABLE "users" (
   id serial,
   user_name varchar(45) NOT NULL,
   password varchar(45) NOT NULL,
@@ -81,7 +82,7 @@ CREATE TABLE "user" (
   CONSTRAINT user_name_UNIQUE UNIQUE  (user_name)
 );
 
-INSERT INTO "user" VALUES (1,'staff_1','123456','APPROVED'),(2,'staff_2','123456','APPROVED');
+INSERT INTO "users" VALUES (1,'staff_1','123456','APPROVED'),(2,'staff_2','123456','APPROVED');
 
 --
 -- Table structure for table `user_role`

@@ -95,8 +95,6 @@ public class UserDAOImpl extends AbstractDAOImpl implements UserDAO {
 		}
 		query.append(");");
 
-		System.out.println(query);
-
 		Connection conn = connectDB();
 		PreparedStatement ps = null;
 		ResultSet rs = null;

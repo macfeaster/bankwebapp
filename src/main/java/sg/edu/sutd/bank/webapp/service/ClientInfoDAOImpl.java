@@ -121,12 +121,8 @@ public class ClientInfoDAOImpl extends AbstractDAOImpl implements ClientInfoDAO 
 			closeDb(conn, ps, rs);
 		}
 
-		System.out.println(clientInfo.getUser());
-
 		List<ClientTransaction> transactions = transactionDAO.load(clientInfo.getUser());
 		clientInfo.setTransactions(transactions);
-
-		System.out.println(transactions);
 
 		return clientInfo;
 	}

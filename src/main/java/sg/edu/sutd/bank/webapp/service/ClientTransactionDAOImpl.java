@@ -16,6 +16,7 @@ https://opensource.org/licenses/ECL-2.0
 package sg.edu.sutd.bank.webapp.service;
 
 import sg.edu.sutd.bank.webapp.commons.ServiceException;
+import sg.edu.sutd.bank.webapp.model.ClientAccount;
 import sg.edu.sutd.bank.webapp.model.ClientTransaction;
 import sg.edu.sutd.bank.webapp.model.TransactionStatus;
 import sg.edu.sutd.bank.webapp.model.User;
@@ -34,13 +35,13 @@ public class ClientTransactionDAOImpl extends AbstractDAOImpl implements ClientT
 		Connection conn = connectDB();
 		PreparedStatement ps;
 		try {
-			ps = prepareStmt(conn, "INSERT INTO client_transaction(trans_code, amount, to_account_num, user_id)"
-					+ " VALUES(?,?,?,?)");
-			int idx = 1;
-			ps.setString(idx++, clientTransaction.getTransCode());
-			ps.setBigDecimal(idx++, clientTransaction.getAmount());
-			ps.setString(idx++, clientTransaction.getToAccountNum());
-			ps.setInt(idx++, clientTransaction.getUser().getId());
+			ps = prepareStmt(conn, "INSERT INTO client_transaction(trans_code, amount, user_id, from_account, to_account)"
+					+ " VALUES(?, ?, ?, ?, ?)");
+			ps.setString(1, clientTransaction.getTransCode());
+			ps.setBigDecimal(2, clientTransaction.getAmount());
+			ps.setInt(3, clientTransaction.getUser().getId());
+			ps.setInt(4, clientTransaction.getToAccount().getId());
+			ps.setInt(5, clientTransaction.getFromAccount().getId());
 			executeInsert(clientTransaction, ps);
 		} catch (SQLException e) {
 			throw ServiceException.wrap(e);
@@ -53,12 +54,9 @@ public class ClientTransactionDAOImpl extends AbstractDAOImpl implements ClientT
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = conn.prepareStatement(
-					"SELECT * FROM client_transaction WHERE user_id = ?");
+			ps = conn.prepareStatement("SELECT * FROM client_transaction WHERE user_id = ?");
 
 			ps.setInt(1, user.getId());
-
-			System.out.println("SELECT * FROM client_transaction WHERE user_id = " + user.getId());
 
 			rs = ps.executeQuery();
 			List<ClientTransaction> transactions = new ArrayList<>();
@@ -70,7 +68,8 @@ public class ClientTransactionDAOImpl extends AbstractDAOImpl implements ClientT
 				trans.setDateTime(rs.getDate("datetime"));
 				trans.setStatus(TransactionStatus.of(rs.getString("status")));
 				trans.setTransCode(rs.getString("trans_code"));
-				trans.setToAccountNum(rs.getString("to_account_num"));
+				trans.setFromAccount(new ClientAccount(rs.getInt("from_account")));
+				trans.setToAccount(new ClientAccount(rs.getInt("to_account")));
 				transactions.add(trans);
 			}
 			return transactions;
@@ -90,7 +89,7 @@ public class ClientTransactionDAOImpl extends AbstractDAOImpl implements ClientT
 			ps = conn.prepareStatement(
 					"SELECT * FROM client_transaction WHERE status is null");
 			rs = ps.executeQuery();
-			List<ClientTransaction> transactions = new ArrayList<ClientTransaction>();
+			List<ClientTransaction> transactions = new ArrayList<>();
 			while (rs.next()) {
 				ClientTransaction trans = new ClientTransaction();
 				trans.setId(rs.getInt("id"));
@@ -99,7 +98,8 @@ public class ClientTransactionDAOImpl extends AbstractDAOImpl implements ClientT
 				trans.setAmount(rs.getBigDecimal("amount"));
 				trans.setDateTime(rs.getDate("datetime"));
 				trans.setTransCode(rs.getString("trans_code"));
-				trans.setToAccountNum(rs.getString("to_account_num"));
+				trans.setFromAccount(new ClientAccount(rs.getInt("from_account")));
+				trans.setToAccount(new ClientAccount(rs.getInt("to_account")));
 				transactions.add(trans);
 			}
 			return transactions;
