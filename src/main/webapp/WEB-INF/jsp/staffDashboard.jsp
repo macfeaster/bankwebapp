@@ -78,8 +78,8 @@
 						<c:forEach var="trans" items="${transList}">
 							<tr>
 								<td>${trans.transCode}</td>
-								<td>CC-216-${trans.fromAccount.id}</td>
-								<td>CC-216-${trans.toAccount.id}</td>
+								<td>CC-${trans.fromAccount.user.id}-${trans.fromAccount.id}</td>
+								<td>CC-${trans.toAccount.user.id}-${trans.toAccount.id}</td>
 								<td>${trans.dateTime}</td>
 								<td>${trans.amount}</td>
 								<td><select name="decision">
