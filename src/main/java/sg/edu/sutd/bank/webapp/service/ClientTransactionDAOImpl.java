@@ -55,7 +55,7 @@ public class ClientTransactionDAOImpl extends AbstractDAOImpl implements ClientT
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = conn.prepareStatement("SELECT * FROM client_transaction WHERE user_id = ?");
+			ps = conn.prepareStatement("SELECT *, a.user_id AS to_id FROM client_transaction t JOIN client_account a ON a.id = t.to_account WHERE t.user_id = ?");
 
 			ps.setInt(1, user.getId());
 
@@ -69,8 +69,8 @@ public class ClientTransactionDAOImpl extends AbstractDAOImpl implements ClientT
 				trans.setDateTime(rs.getDate("datetime"));
 				trans.setStatus(TransactionStatus.of(rs.getString("status")));
 				trans.setTransCode(rs.getString("trans_code"));
-				trans.setFromAccount(new ClientAccount(rs.getInt("from_account")));
-				trans.setToAccount(new ClientAccount(rs.getInt("to_account")));
+				trans.setFromAccount(new ClientAccount(rs.getInt("from_account"), user));
+				trans.setToAccount(new ClientAccount(rs.getInt("to_account"), new User(rs.getInt("to_id"))));
 				transactions.add(trans);
 			}
 			return transactions;
@@ -88,7 +88,7 @@ public class ClientTransactionDAOImpl extends AbstractDAOImpl implements ClientT
 		ResultSet rs = null;
 		try {
 			ps = conn.prepareStatement(
-					"SELECT * FROM client_transaction WHERE status is null");
+					"SELECT *, a.user_id AS to_id FROM client_transaction t JOIN client_account a ON a.id = t.to_account WHERE status IS NULL");
 			rs = ps.executeQuery();
 			List<ClientTransaction> transactions = new ArrayList<>();
 			while (rs.next()) {
@@ -99,8 +99,8 @@ public class ClientTransactionDAOImpl extends AbstractDAOImpl implements ClientT
 				trans.setAmount(rs.getBigDecimal("amount"));
 				trans.setDateTime(rs.getDate("datetime"));
 				trans.setTransCode(rs.getString("trans_code"));
-				trans.setFromAccount(new ClientAccount(rs.getInt("from_account")));
-				trans.setToAccount(new ClientAccount(rs.getInt("to_account")));
+				trans.setFromAccount(new ClientAccount(rs.getInt("from_account"), user));
+				trans.setToAccount(new ClientAccount(rs.getInt("to_account"), new User(rs.getInt("to_id"))));
 				transactions.add(trans);
 			}
 			return transactions;

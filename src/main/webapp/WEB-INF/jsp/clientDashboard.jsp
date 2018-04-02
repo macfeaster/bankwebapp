@@ -23,7 +23,7 @@
 				<c:forEach var="acc" items="${clientInfo.accounts}">
 					<tr>
 						<td>Changi College eAng Bao Savings Account</td>
-						<td>CC-216-${acc.id}</td>
+						<td>CC-${acc.user.id}-${acc.id}</td>
 						<td>$${acc.amount}</td>
 					</tr>
 				</c:forEach>
@@ -45,8 +45,8 @@
 				<c:forEach var="trans" items="${clientInfo.transactions}">
 					<tr>
 						<td>${trans.transCode}</td>
-						<td>CC-216-${trans.fromAccount.id}</td>
-						<td>CC-216-${trans.toAccount.id}</td>
+						<td>CC-${trans.fromAccount.user.id}-${trans.fromAccount.id}</td>
+						<td>CC-${trans.toAccount.user.id}-${trans.toAccount.id}</td>
 						<td>${trans.dateTime}</td>
 						<td>${trans.amount}</td>
 						<c:if test="${empty trans.status}">

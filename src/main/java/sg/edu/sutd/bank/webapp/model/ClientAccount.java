@@ -23,7 +23,8 @@ public class ClientAccount extends AbstractIdEntity {
 
 	public ClientAccount() {}
 
-	public ClientAccount(int accountId) {
+	public ClientAccount(int accountId, User user) {
+		this.user = user;
 		this.id = accountId;
 	}
 

@@ -133,8 +133,8 @@ public class ClientAccountDAOImpl extends AbstractDAOImpl implements ClientAccou
 					ps.setInt(1, transaction.getId());
 					ResultSet rs = ps.executeQuery();
 					rs.next();
-					transaction.setFromAccount(new ClientAccount(rs.getInt("from_account")));
-					transaction.setToAccount(new ClientAccount(rs.getInt("to_account")));
+					transaction.setFromAccount(new ClientAccount(rs.getInt("from_account"), null));
+					transaction.setToAccount(new ClientAccount(rs.getInt("to_account"), null));
 					BigDecimal amount = rs.getBigDecimal("amount");
 					transaction.setAmount(amount);
 

@@ -16,7 +16,7 @@
 				<div class="form-group">
 					<select class="form-control" name="fromAccountNum">
 						<c:forEach var="acc" items="${accounts}">
-							<option value="${acc.id}">Changi College eAng Bao Savings Account - CC-216-${acc.id} - $${acc.amount}</option>
+							<option value="${acc.id}">Changi College eAng Bao Savings Account - CC-${acc.user.id}-${acc.id} - $${acc.amount}</option>
 						</c:forEach>
 					</select>
 				</div>

@@ -120,6 +120,7 @@ public class ClientInfoDAOImpl extends AbstractDAOImpl implements ClientInfoDAO 
 					account.setUser(user);
 					account.setId(rsa.getInt("id"));
 					account.setAmount(rsa.getBigDecimal("amount"));
+					account.setUser(user);
 					accounts.add(account);
 				}
 
