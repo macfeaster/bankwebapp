@@ -42,7 +42,9 @@ public class ClientTransactionDAOImpl extends AbstractDAOImpl implements ClientT
 			ps.setInt(3, clientTransaction.getUser().getId());
 			ps.setInt(4, clientTransaction.getFromAccount().getId());
 			ps.setInt(5, clientTransaction.getToAccount().getId());
-			ps.setString(6, clientTransaction.getStatus().toString());
+
+			String status = clientTransaction.getStatus() != null ? clientTransaction.getStatus().toString() : null;
+			ps.setString(6, status);
 			executeInsert(clientTransaction, ps);
 		} catch (SQLException e) {
 			throw ServiceException.wrap(e);
