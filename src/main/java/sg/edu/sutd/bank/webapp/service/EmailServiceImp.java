@@ -22,6 +22,7 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
@@ -57,7 +58,7 @@ public class EmailServiceImp implements EmailService {
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toAddr));
 			message.setSubject(subject);
 			message.setText(msg);
-			// Transport.send(message);
+			Transport.send(message);
 		} catch (MessagingException e) {
 			throw ServiceException.wrap(e);
 		}
