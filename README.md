@@ -1,5 +1,8 @@
 # SUTD-bank Webapp
 
+**NOTE: Set up is exactly the same as for the default project. The database name is expected to be `bank` and not `bankwebapp` but otherwise everything
+is exactly the same.**
+
 Contents
 
 - [SUTD-bank Webapp](#sutd-bank-webapp)
@@ -125,10 +128,10 @@ Open `Servers/Tomcat vX.X Server at localhost-config/server.xml` (where `vX.X` r
     <Realm 
         className="org.apache.catalina.realm.JDBCRealm"
         driverName="org.gjt.mm.mysql.Driver"
-        connectionURL="jdbc:mysql://localhost:3306/bankwebapp"
+        connectionURL="jdbc:mysql://localhost:3306/bank"
         connectionName="root" 
         connectionPassword="INSERT_YOUR_PASSWORD_HERE"
-        userTable="user" 
+        userTable="users" 
         userNameCol="user_name" 
         userCredCol="password"
         userRoleTable="user_role" 
@@ -159,7 +162,7 @@ Edit `<TOMCAT_HOME>/conf/server.xml` and add the following lines between the `<E
         connectionURL="jdbc:mysql://localhost:3306/bankwebapp"
         connectionName="root" 
         connectionPassword="INSERT_YOUR_PASSWORD_HERE"
-        userTable="user" 
+        userTable="users" 
         userNameCol="user_name" 
         userCredCol="password"
         userRoleTable="user_role" 
