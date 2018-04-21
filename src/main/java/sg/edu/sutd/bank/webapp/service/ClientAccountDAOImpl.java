@@ -56,10 +56,9 @@ public class ClientAccountDAOImpl extends AbstractDAOImpl implements ClientAccou
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = prepareStmt(conn, "UPDATE client_account SET amount = ? WHERE user_id = ?");
-			int idx = 1;
-			ps.setBigDecimal(idx++, clientAccount.getAmount());
-			ps.setInt(idx++, clientAccount.getUser().getId());
+			ps = prepareStmt(conn, "UPDATE client_account SET amount = ? WHERE id = ?");
+			ps.setBigDecimal(1, clientAccount.getAmount());
+			ps.setInt(2, clientAccount.getId());
 			executeUpdate(ps);
 		} catch (SQLException e) {
 			throw ServiceException.wrap(e);

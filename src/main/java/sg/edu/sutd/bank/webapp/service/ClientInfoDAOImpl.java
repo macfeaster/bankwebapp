@@ -60,7 +60,7 @@ public class ClientInfoDAOImpl extends AbstractDAOImpl implements ClientInfoDAO 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = conn.prepareStatement("SELECT acc.*, u.* FROM client_info acc, \"users\" u WHERE acc.user_id = u.id and u.status is null");
+			ps = conn.prepareStatement("SELECT acc.*, u.* FROM client_info acc, users u WHERE acc.user_id = u.id and u.status is null");
 			rs = ps.executeQuery();
 			List<ClientInfo> result = new ArrayList<>();
 			while (rs.next()) {
@@ -96,7 +96,7 @@ public class ClientInfoDAOImpl extends AbstractDAOImpl implements ClientInfoDAO 
 		ClientInfo clientInfo;
 		try {
 			ps = conn.prepareStatement(
-					"SELECT info.*, u.* FROM client_info info, \"users\" u WHERE info.user_id = u.id and u.user_name=?");
+					"SELECT info.*, u.* FROM client_info info, users u WHERE info.user_id = u.id and u.user_name=?");
 			ps.setString(1, userName);
 			rs = ps.executeQuery();
 

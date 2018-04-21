@@ -65,7 +65,7 @@ public class TransactionCodesDAOImp extends AbstractDAOImpl implements Transacti
 		ResultSet rs;
 
 		try {
-			String query = "SELECT * FROM transaction_code tc JOIN \"users\" u ON u.id = tc.user_id " +
+			String query = "SELECT * FROM transaction_code tc JOIN users u ON u.id = tc.user_id " +
 					"WHERE code = ? AND user_id = ? AND used = FALSE";
 
 			ps = prepareStmt(conn, query);

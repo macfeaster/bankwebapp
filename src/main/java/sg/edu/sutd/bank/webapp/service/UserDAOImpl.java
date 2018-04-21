@@ -32,7 +32,7 @@ public class UserDAOImpl extends AbstractDAOImpl implements UserDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = conn.prepareStatement("SELECT id, user_name, status FROM \"users\" WHERE user_name=?");
+			ps = conn.prepareStatement("SELECT id, user_name, status FROM users WHERE user_name=?");
 			ps.setString(1, userName);
 			rs = ps.executeQuery();
 			if (rs.next()) {
@@ -56,7 +56,7 @@ public class UserDAOImpl extends AbstractDAOImpl implements UserDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = prepareStmt(conn, "INSERT INTO \"users\"(user_name, password) VALUES(?,?)");
+			ps = prepareStmt(conn, "INSERT INTO users(user_name, password) VALUES(?,?)");
 			int idx = 1;
 			ps.setString(idx++, user.getUserName());
 			ps.setString(idx++, user.getPassword());
@@ -80,7 +80,7 @@ public class UserDAOImpl extends AbstractDAOImpl implements UserDAO {
 	 */
 	@Override
 	public void updateDecision(List<User> users) throws ServiceException {
-		StringBuilder query = new StringBuilder("UPDATE \"users\" SET status = Case id ");
+		StringBuilder query = new StringBuilder("UPDATE users SET status = Case id ");
 		for (User user : users) {
 			query.append(String.format("WHEN %d THEN '%s' ", user.getId(), user.getStatus().name()));
 		}
